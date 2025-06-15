@@ -24,3 +24,20 @@ todosRouter.post('/create-todo', (req: Request, res: Response) => {
     res.send("Received data successfully");
 })
 
+todosRouter.get('/todo/:id', (req: Request, res: Response) => {
+    const id = req.params.id;
+    const data = fs.readFileSync(filePath, { encoding: "utf-8" });
+    const todos = JSON.parse(data);
+    const todo = todos.find((todo: any) => todo.id === id);
+
+    if (!todo) {
+        return res.status(404).json({
+            message: "Todo not found",
+        });
+    }
+
+    res.json({
+        message: "Todo fetched successfully",
+        data: todo,
+    });
+})
